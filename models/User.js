@@ -1,36 +1,54 @@
-const bcrypt = require('bcrypt')
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
-  userName: { type: String, unique: true },
-  email: { type: String, unique: true },
-  password: String
-})
+	username: {
+		type: String,
+		required: true,
+		min: 4,
+		max: 20,
+	},
+	email: {
+		type: String,
+		required: true,
+	},
+	password: {
+		type: String,
+		required: true,
+	},
+	// role: {
+	// 	type: String,
+	// 	enum: ['user', 'admin'],
+	// 	required: false,
+	// },
+	// todos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Todo' }],
+	// projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }],
+});
 
+UserSchema.pre('save', function (next) {
+	if (!this.isModified('password')) {
+		return next();
+	}
+	bcrypt.hash(this.password, 10, (err, passwordHash) => {
+		if (err) {
+			return next(err);
+		}
+		this.password = passwordHash;
+		next();
+	});
+});
 
-// Password hash middleware.
- 
- UserSchema.pre('save', function save(next) {
-  const user = this
-  if (!user.isModified('password')) { return next() }
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) { return next(err) }
-    bcrypt.hash(user.password, salt, (err, hash) => {
-      if (err) { return next(err) }
-      user.password = hash
-      next()
-    })
-  })
-})
+UserSchema.methods.comparePassword = function (password, cb) {
+	bcrypt.compare(password, this.password, (err, isMatch) => {
+		if (err) {
+			return cb(err);
+		} else {
+			if (!isMatch) {
+				return cb(null, isMatch);
+			}
+			return cb(null, this);
+		}
+	});
+};
 
-
-// Helper method for validating user's password.
-
-UserSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    cb(err, isMatch)
-  })
-}
-
-
-module.exports = mongoose.model('User', UserSchema)
+module.exports = mongoose.model('User', UserSchema);
