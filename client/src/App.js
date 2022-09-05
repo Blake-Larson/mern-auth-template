@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Dashboard from './Pages/Dashboard';
-import Home from './Pages/Home';
-import Login from './Pages/Login';
-import ErrorPage from './Pages/ErrorPage';
-import SignUp from './Pages/SignUp';
+import Dashboard from './pages/Dashboard';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import NoMatch from './pages/NoMatch';
+import SignUp from './pages/SignUp';
 
 export default function App() {
 	// const [data, setData] = React.useState(null);
@@ -27,7 +27,7 @@ export default function App() {
 				<Route path='/login' element={<Login />}></Route>
 				<Route path='/signup' element={<SignUp />}></Route>
 				<Route path='/dashboard' element={<Dashboard />}></Route>
-				<Route path='*' element={<ErrorPage />} />
+				<Route path='*' element={<NoMatch />} />
 			</Routes>
 		</Router>
 	);

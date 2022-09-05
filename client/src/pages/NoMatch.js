@@ -1,13 +1,13 @@
 import React from 'react';
 import Header from '../components/Header';
 
-function ErrorPage() {
+function NoMatch() {
 	return (
 		<div>
 			<Header />
-			<h1>ErrorPage</h1>
+			<p>There's nothing here: 404!</p>
 		</div>
 	);
 }
 
-export default ErrorPage;
+export default NoMatch;

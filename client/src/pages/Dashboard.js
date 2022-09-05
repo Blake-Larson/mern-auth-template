@@ -2,10 +2,12 @@ import React from 'react';
 import DashboardHeader from '../components/DashboardHeader';
 
 function Dashboard() {
+	const { token } = useAuth();
 	return (
 		<div>
 			<DashboardHeader />
 			<h1>Dashboard</h1>
+			<div>Authenticated as {token}</div>
 		</div>
 	);
 }
