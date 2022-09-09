@@ -1,12 +1,13 @@
 import * as React from 'react';
-import {
-	Routes,
-	Route,
-	NavLink,
-	Navigate,
-	useNavigate,
-	useLocation,
-} from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+const useAuth = () => {
+	return React.useContext(AuthContext);
+};
+
+const useTest = () => {
+	console.log('working');
+};
 
 const fakeAuth = () =>
 	new Promise(resolve => {

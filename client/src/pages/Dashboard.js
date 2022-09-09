@@ -1,5 +1,6 @@
 import React from 'react';
 import DashboardHeader from '../components/DashboardHeader';
+import useAuth from '../auth/UseAuth';
 
 function Dashboard() {
 	const { token } = useAuth();
