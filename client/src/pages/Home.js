@@ -1,26 +1,19 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import useAuth from '../auth/UseAuth';
+import Login from './Login';
+import SignUp from './SignUp';
 
 function Home() {
-	let navigate = useNavigate();
-
-	const { onLogin } = useAuth();
-
 	return (
 		<div>
 			<Header />
-			<h2>Home (Public)</h2>
-			<div onClick={() => navigate('/login')} className='btn btn-primary'>
-				Log In
+			<div className='flex flex-col p-10 items-center gap-5'>
+				<h2>This is the home page.(Public)</h2>
+				<div className='flex gap-10 justify-center'>
+					<Login />
+					<SignUp />
+				</div>
 			</div>
-			<div onClick={() => navigate('/signup')} className='btn btn-secondary'>
-				Sign Up
-			</div>
-			<button type='button' onClick={onLogin}>
-				Sign In
-			</button>
 		</div>
 	);
 }

@@ -1,14 +1,16 @@
 import React from 'react';
-import DashboardHeader from '../components/DashboardHeader';
-import useAuth from '../auth/UseAuth';
+import { useAuth } from '../auth/AuthProvider';
+import Header from '../components/Header';
 
 function Dashboard() {
 	const { token } = useAuth();
 	return (
 		<div>
-			<DashboardHeader />
-			<h1>Dashboard</h1>
-			<div>Authenticated as {token}</div>
+			<Header />
+			<div className='flex flex-col p-10 items-center gap-5'>
+				<h2>This is the Dashboard page. (Private)</h2>
+				<div>Authenticated as {token}</div>
+			</div>
 		</div>
 	);
 }

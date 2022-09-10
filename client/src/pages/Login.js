@@ -1,9 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
+import { AuthProvider } from '../auth/AuthProvider';
+import axios from 'axios';
 
 function Login() {
 	let navigate = useNavigate();
+
+	const [msg, setMsg] = React.useState({
+		text: '',
+		success: false,
+	});
 
 	const [loginData, setLoginData] = React.useState({
 		email: '',
@@ -17,26 +23,53 @@ function Login() {
 			[name]: type === 'checkbox' ? checked : value,
 		}));
 	}
+	// const handleSubmit = async event => {
+	// 	event.preventDefault();
+	// 	console.log(loginData, 'Login Attempt Sent');
+	// 	try {
+	// 		const response = await fetch('/login', {
+	// 			method: 'POST',
+	// 			headers: { 'Content-Type': 'application/json' },
+	// 			body: JSON.stringify(loginData),
+	// 			withCredentials: true,
+	// 		});
+	// 		const data = await response.json();
+	// 		console.log('From Server:', data, data.msgBody);
+	// 		AuthProvider.handleLogin(data);
+	// 	} catch (err) {
+	// 		console.log(err);
+	// 	}
+	// 	navigate('/dashboard');
+	// };
 	const handleSubmit = async event => {
 		event.preventDefault();
 		console.log(loginData, 'Login Attempt Sent');
 		try {
-			const response = await fetch('/login', {
+			const response = await axios({
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(loginData),
+				data: { loginData },
+				url: 'http://localhost:5000/login',
+				withCredentials: true,
 			});
-			const data = await response.json();
-			console.log('From Server:', data, data.msgBody);
+			console.log('From Server:', response);
+			setMsg(prevMsg => ({
+				...prevMsg,
+				text: response.data.message.msgBody,
+				success: true,
+			}));
+			AuthProvider.handleLogin(response);
 		} catch (err) {
-			console.log(err);
+			setMsg(prevMsg => ({
+				...prevMsg,
+				text: err.response.data.message.msgBody,
+				success: false,
+			}));
+			console.log(err.response.data);
 		}
-		navigate('/dashboard');
 	};
 
 	return (
 		<div>
-			<Header />
 			<section className='flex flex-col items-center p-10'>
 				<div className='card w-96 shadow-xl bg-neutral'>
 					<div className='card-body'>
@@ -46,7 +79,6 @@ function Login() {
 						<form onSubmit={handleSubmit} className='flex flex-col gap-2'>
 							<input
 								type='text'
-								id='email'
 								name='email'
 								placeholder='Email'
 								onChange={handleFormChange}
@@ -54,7 +86,6 @@ function Login() {
 							/>
 							<input
 								type='password'
-								id='password'
 								name='password'
 								placeholder='Password'
 								onChange={handleFormChange}
@@ -64,6 +95,15 @@ function Login() {
 								<button className='btn btn-primary'>Log in</button>
 							</div>
 						</form>
+						<div
+							className={
+								msg.success
+									? 'text-success text-center'
+									: 'text-warning text-center'
+							}
+						>
+							{msg ? msg.text : ''}
+						</div>
 					</div>
 				</div>
 			</section>

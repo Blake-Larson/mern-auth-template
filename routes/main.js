@@ -1,30 +1,14 @@
 const express = require('express');
-const mainRouter = express.Router();
-const userController = require('../controllers/user');
-const passport = require('passport');
-const passportConfig = require('../passport');
+const router = express.Router();
+const authController = require('../controllers/auth');
+const homeController = require('../controllers/home');
+const { ensureAuth, ensureGuest } = require('../middleware/auth');
 
-mainRouter.post('/signup', userController.signUpUser);
-mainRouter.post(
-	'/login',
-	passport.authenticate('local', { session: false }),
-	userController.login
-);
-mainRouter.post(
-	'/logout',
-	passport.authenticate('jwt', { session: false }),
-	userController.logout
-);
+// router.get('/', homeController.getIndex)
+// router.get('/login', authController.getLogin)
+router.post('/login', authController.postLogin);
+// router.get('/logout', authController.logout)
+// router.get('/signup', authController.getSignup)
+router.post('/signup', authController.postSignup);
 
-mainRouter.get(
-	'/admin',
-	passport.authenticate('jwt', { session: false }),
-	userController.getAdmin
-);
-mainRouter.get(
-	'/authenticated',
-	passport.authenticate('jwt', { session: false }),
-	userController.getAuthenticated
-);
-
-module.exports = mainRouter;
+module.exports = router;

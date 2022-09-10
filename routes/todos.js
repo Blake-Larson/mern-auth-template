@@ -1,16 +1,16 @@
 const express = require('express')
-const todosRouter = express.Router()
-const todosController = require('../controllers/todos')
-const passport = require('passport')
+const router = express.Router()
+const todosController = require('../controllers/todos') 
+const { ensureAuth, ensureGuest } = require('../middleware/auth')
 
+router.get('/', ensureAuth, todosController.getTodos)
 
-// todosRouter.get('/', (req,res) => res.json('getting root'))
+router.post('/createTodo', todosController.createTodo)
 
-todosRouter.get('/', passport.authenticate('jwt', { session: false }), todosController.getTodos)
-todosRouter.post('/addTodo', passport.authenticate('jwt', { session: false }), todosController.addTodo)
-todosRouter.put('/toggleComplete', passport.authenticate('jwt', { session: false }), todosController.toggleComplete)
-todosRouter.delete('/removeTodo', passport.authenticate('jwt', { session: false }), todosController.removeTodo)
-// todosRouter.delete('/removeTodo', () => console.log('durrrrrrr'))
+router.put('/markComplete', todosController.markComplete)
 
-module.exports = todosRouter
+router.put('/markIncomplete', todosController.markIncomplete)
 
+router.delete('/deleteTodo', todosController.deleteTodo)
+
+module.exports = router

@@ -1,29 +1,16 @@
 import * as React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const useAuth = () => {
-	return React.useContext(AuthContext);
-};
-
-const useTest = () => {
-	console.log('working');
-};
-
-const fakeAuth = () =>
-	new Promise(resolve => {
-		setTimeout(() => resolve('2342f2f1d131rf12'), 250);
-	});
-
 const AuthContext = React.createContext(null);
 
-const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
 	const [token, setToken] = React.useState(null);
 
-	const handleLogin = async () => {
-		const token = await fakeAuth();
+	const handleLogin = async data => {
+		const token = await data;
 
 		setToken(token);
 
@@ -44,4 +31,6 @@ const AuthProvider = ({ children }) => {
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export default AuthProvider;
+export const useAuth = () => {
+	return React.useContext(AuthContext);
+};

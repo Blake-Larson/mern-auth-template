@@ -1,9 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
+import axios from 'axios';
 
 function SignUp() {
 	let navigate = useNavigate();
+
+	const [msg, setMsg] = React.useState({
+		text: '',
+		success: false,
+	});
 
 	const [signUpData, setSignUpData] = React.useState({
 		userName: '',
@@ -19,26 +24,36 @@ function SignUp() {
 			[name]: type === 'checkbox' ? checked : value,
 		}));
 	}
+
 	const handleSubmit = async event => {
 		event.preventDefault();
-		console.log('Sign Up Attempt Sent');
+		console.log(signUpData, 'Sign Up Attempt Sent');
 		try {
-			const response = await fetch('/signup', {
+			const response = await axios({
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(signUpData),
+				data: { signUpData },
+				url: 'http://localhost:5000/signup',
+				withCredentials: true,
 			});
-			const data = await response.json();
-			console.log('From Server:', data, data.msgBody);
+			console.log('From Server:', response);
+			setMsg(prevMsg => ({
+				...prevMsg,
+				text: response.data.message.msgBody,
+				success: true,
+			}));
 		} catch (err) {
-			console.log(err);
+			setMsg(prevMsg => ({
+				...prevMsg,
+				text: err.response.data.message.msgBody,
+				success: false,
+			}));
+			console.log(err.response);
 		}
 		navigate('/dashboard');
 	};
 
 	return (
 		<div>
-			<Header />
 			<section className='flex flex-col items-center p-10'>
 				<div className='card w-96 shadow-xl bg-neutral'>
 					<div className='card-body'>
@@ -46,15 +61,13 @@ function SignUp() {
 						<form onSubmit={handleSubmit} className='flex flex-col gap-2'>
 							<input
 								type='text'
-								id='userName'
 								name='userName'
-								placeholder='Username'
+								placeholder='userName'
 								onChange={handleFormChange}
 								className='input input-bordered w-full max-w-xs'
 							/>
 							<input
 								type='text'
-								id='email'
 								name='email'
 								placeholder='Email'
 								onChange={handleFormChange}
@@ -62,7 +75,6 @@ function SignUp() {
 							/>
 							<input
 								type='password'
-								id='password'
 								name='password'
 								placeholder='Password'
 								onChange={handleFormChange}
@@ -70,7 +82,6 @@ function SignUp() {
 							/>
 							<input
 								type='password'
-								id='confirmPassword'
 								name='confirmPassword'
 								placeholder='Confirm Password'
 								onChange={handleFormChange}
@@ -80,6 +91,15 @@ function SignUp() {
 								<button className='btn btn-primary'>Create User</button>
 							</div>
 						</form>
+						<div
+							className={
+								msg.success
+									? 'text-success text-center'
+									: 'text-warning text-center'
+							}
+						>
+							{msg ? msg.text : ''}
+						</div>
 					</div>
 				</div>
 			</section>
