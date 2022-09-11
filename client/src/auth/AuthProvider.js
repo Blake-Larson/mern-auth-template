@@ -9,14 +9,11 @@ export const AuthProvider = ({ children }) => {
 
 	const [token, setToken] = React.useState(null);
 
-	const handleLogin = async data => {
-		const token = await data;
-
-		setToken(token);
-
+	function handleLogin(data) {
+		setToken(data);
 		const origin = location.state?.from?.pathname || '/dashboard';
 		navigate(origin);
-	};
+	}
 
 	const handleLogout = () => {
 		setToken(null);
@@ -24,7 +21,7 @@ export const AuthProvider = ({ children }) => {
 
 	const value = {
 		token,
-		onLogin: handleLogin,
+		handleLogin,
 		onLogout: handleLogout,
 	};
 

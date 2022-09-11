@@ -1,10 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AuthProvider } from '../auth/AuthProvider';
+import { useAuth } from '../auth/AuthProvider';
 import axios from 'axios';
 
 function Login() {
-	let navigate = useNavigate();
+	// let navigate = useNavigate();
+
+	const { handleLogin } = useAuth();
 
 	const [msg, setMsg] = React.useState({
 		text: '',
@@ -23,48 +24,32 @@ function Login() {
 			[name]: type === 'checkbox' ? checked : value,
 		}));
 	}
-	// const handleSubmit = async event => {
-	// 	event.preventDefault();
-	// 	console.log(loginData, 'Login Attempt Sent');
-	// 	try {
-	// 		const response = await fetch('/login', {
-	// 			method: 'POST',
-	// 			headers: { 'Content-Type': 'application/json' },
-	// 			body: JSON.stringify(loginData),
-	// 			withCredentials: true,
-	// 		});
-	// 		const data = await response.json();
-	// 		console.log('From Server:', data, data.msgBody);
-	// 		AuthProvider.handleLogin(data);
-	// 	} catch (err) {
-	// 		console.log(err);
-	// 	}
-	// 	navigate('/dashboard');
-	// };
+
 	const handleSubmit = async event => {
 		event.preventDefault();
 		console.log(loginData, 'Login Attempt Sent');
 		try {
 			const response = await axios({
 				method: 'POST',
-				data: { loginData },
+				data: {
+					email: loginData.email,
+					password: loginData.password,
+				},
 				url: 'http://localhost:5000/login',
 				withCredentials: true,
 			});
-			console.log('From Server:', response);
-			setMsg(prevMsg => ({
-				...prevMsg,
+			console.log('From Server:', response.data.user);
+			setMsg({
 				text: response.data.message.msgBody,
 				success: true,
-			}));
-			AuthProvider.handleLogin(response);
+			});
+			handleLogin(response.data.user);
 		} catch (err) {
-			setMsg(prevMsg => ({
-				...prevMsg,
+			console.log(err);
+			setMsg({
 				text: err.response.data.message.msgBody,
 				success: false,
-			}));
-			console.log(err.response.data);
+			});
 		}
 	};
 

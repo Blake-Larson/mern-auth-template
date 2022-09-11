@@ -12,7 +12,7 @@ const User = require('../models/User');
 //   }
 
 exports.postLogin = (req, res, next) => {
-	if (!validator.isEmail(req.body.loginData.email)) {
+	if (!validator.isEmail(req.body.email)) {
 		res.status(400).json({
 			message: {
 				msgBody: 'Please enter a valid email address.',
@@ -21,7 +21,7 @@ exports.postLogin = (req, res, next) => {
 		});
 		return;
 	}
-	if (validator.isEmpty(req.body.loginData.password)) {
+	if (validator.isEmpty(req.body.password)) {
 		res.status(400).json({
 			message: {
 				msgBody: 'Password cannot be blank.',
@@ -31,28 +31,18 @@ exports.postLogin = (req, res, next) => {
 		return;
 	}
 
-	req.body.loginData.email = validator.normalizeEmail(
-		req.body.loginData.email,
-		{
-			gmail_remove_dots: false,
-		}
-	);
+	req.body.email = validator.normalizeEmail(req.body.email, {
+		gmail_remove_dots: false,
+	});
 
 	passport.authenticate('local', (err, user, info) => {
 		if (err) {
-			res.status(500).json({
-				message: {
-					msgBody: 'Error has occured during authentication.',
-					msgError: true,
-					err,
-				},
-			});
-			return;
+			return next(err);
 		}
 		if (!user) {
 			res.status(500).json({
 				message: {
-					msgBody: 'Not user.',
+					msgBody: info.message,
 					msgError: true,
 					err,
 				},
@@ -61,23 +51,17 @@ exports.postLogin = (req, res, next) => {
 		}
 		req.logIn(user, err => {
 			if (err) {
-				res.status(500).json({
-					message: {
-						msgBody: 'Log in failed.',
-						msgError: true,
-						err,
-					},
-				});
-				return;
+				return next(err);
 			}
 			res.status(201).json({
+				user: user,
 				message: {
 					msgBody: 'Success! You are logged in.',
 					msgError: false,
 				},
 			});
 		});
-	})(req, res);
+	})(req, res, next);
 };
 
 exports.logout = (req, res) => {
@@ -100,7 +84,7 @@ exports.logout = (req, res) => {
 // }
 
 exports.postSignup = (req, res) => {
-	if (!validator.isEmail(req.body.signUpData.email)) {
+	if (!validator.isEmail(req.body.email)) {
 		res.status(400).json({
 			message: {
 				msgBody: 'Please enter a valid email address.',
@@ -109,7 +93,7 @@ exports.postSignup = (req, res) => {
 		});
 		return;
 	}
-	if (!validator.isLength(req.body.signUpData.password, { min: 8 })) {
+	if (!validator.isLength(req.body.password, { min: 8 })) {
 		res.status(400).json({
 			message: {
 				msgBody: 'Password must be at least 8 characters long.',
@@ -119,7 +103,7 @@ exports.postSignup = (req, res) => {
 		return;
 	}
 
-	if (req.body.signUpData.password !== req.body.signUpData.confirmPassword) {
+	if (req.body.password !== req.body.confirmPassword) {
 		res.status(400).json({
 			message: {
 				msgBody: 'Passwords do not match.',
@@ -129,25 +113,19 @@ exports.postSignup = (req, res) => {
 		return;
 	}
 
-	req.body.signUpData.email = validator.normalizeEmail(
-		req.body.signUpData.email,
-		{
-			gmail_remove_dots: false,
-		}
-	);
+	req.body.email = validator.normalizeEmail(req.body.email, {
+		gmail_remove_dots: false,
+	});
 
 	const user = new User({
-		userName: req.body.signUpData.userName,
-		email: req.body.signUpData.email,
-		password: req.body.signUpData.password,
+		userName: req.body.userName,
+		email: req.body.email,
+		password: req.body.password,
 	});
 
 	User.findOne(
 		{
-			$or: [
-				{ email: req.body.signUpData.email },
-				{ userName: req.body.signUpData.userName },
-			],
+			$or: [{ email: req.body.email }, { userName: req.body.userName }],
 		},
 		(err, existingUser) => {
 			if (err) {

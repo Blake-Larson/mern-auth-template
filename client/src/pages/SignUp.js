@@ -1,9 +1,9 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../auth/AuthProvider';
 import axios from 'axios';
 
 function SignUp() {
-	let navigate = useNavigate();
+	// const { handleLogin } = useAuth();
 
 	const [msg, setMsg] = React.useState({
 		text: '',
@@ -31,25 +31,28 @@ function SignUp() {
 		try {
 			const response = await axios({
 				method: 'POST',
-				data: { signUpData },
+				data: {
+					userName: signUpData.userName,
+					email: signUpData.email,
+					password: signUpData.password,
+					confirmPassword: signUpData.confirmPassword,
+				},
 				url: 'http://localhost:5000/signup',
 				withCredentials: true,
 			});
 			console.log('From Server:', response);
-			setMsg(prevMsg => ({
-				...prevMsg,
+			setMsg({
 				text: response.data.message.msgBody,
 				success: true,
-			}));
+			});
+			// handleLogin(response.data.user);
 		} catch (err) {
-			setMsg(prevMsg => ({
-				...prevMsg,
+			setMsg({
 				text: err.response.data.message.msgBody,
 				success: false,
-			}));
+			});
 			console.log(err.response);
 		}
-		navigate('/dashboard');
 	};
 
 	return (
