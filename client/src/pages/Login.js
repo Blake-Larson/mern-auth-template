@@ -1,6 +1,5 @@
 import React from 'react';
-import { useAuth } from '../auth/AuthProvider';
-import axios from 'axios';
+import useAuth from '../auth/useAuth';
 
 function Login() {
 	// let navigate = useNavigate();
@@ -27,23 +26,12 @@ function Login() {
 
 	const handleSubmit = async event => {
 		event.preventDefault();
-		console.log(loginData, 'Login Attempt Sent');
 		try {
-			const response = await axios({
-				method: 'POST',
-				data: {
-					email: loginData.email,
-					password: loginData.password,
-				},
-				url: 'http://localhost:5000/login',
-				withCredentials: true,
-			});
-			console.log('From Server:', response.data.user);
+			const response = await handleLogin(loginData);
 			setMsg({
 				text: response.data.message.msgBody,
 				success: true,
 			});
-			handleLogin(response.data.user);
 		} catch (err) {
 			console.log(err);
 			setMsg({

@@ -168,3 +168,13 @@ exports.postSignup = (req, res) => {
 		}
 	);
 };
+
+exports.getAuthenticated = (req, res) => {
+	console.log(req.session.passport, 'hi');
+	const { user } = req.session.passport;
+	if (user) {
+		return res.status(200).json({ isAuthenticated: true, user: { userName } });
+	} else {
+		return res.status(401).json({ isAuthenticated: false, user: { userName } });
+	}
+};

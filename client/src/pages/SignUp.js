@@ -1,10 +1,7 @@
 import React from 'react';
-import { useAuth } from '../auth/AuthProvider';
 import axios from 'axios';
 
 function SignUp() {
-	// const { handleLogin } = useAuth();
-
 	const [msg, setMsg] = React.useState({
 		text: '',
 		success: false,
@@ -45,7 +42,6 @@ function SignUp() {
 				text: response.data.message.msgBody,
 				success: true,
 			});
-			// handleLogin(response.data.user);
 		} catch (err) {
 			setMsg({
 				text: err.response.data.message.msgBody,

@@ -1,17 +1,17 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAuth } from '../auth/AuthProvider';
+import useAuth from '../auth/useAuth';
 
 function Navigation() {
-	const { token, onLogout } = useAuth();
+	const { user, handleLogout } = useAuth();
 
 	return (
 		<nav className='flex gap-5'>
-			<NavLink to='/home'>Home</NavLink>
+			<NavLink to='/'>Home</NavLink>
 			<NavLink to='/dashboard'>Dashboard</NavLink>
 
-			{token && (
-				<button type='button' onClick={onLogout}>
+			{user._id && (
+				<button type='button' onClick={handleLogout}>
 					Sign Out
 				</button>
 			)}

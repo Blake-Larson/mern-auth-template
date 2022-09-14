@@ -37,8 +37,18 @@ app.use(
 		resave: false,
 		saveUninitialized: false,
 		store: new MongoStore({ mongooseConnection: mongoose.connection }),
+		cookie: {
+			httpOnly: true,
+			expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+			maxAge: 1000 * 60 * 60 * 24 * 7,
+		},
 	})
 );
+
+app.use((req, res, next) => {
+	console.log(req.session);
+	next();
+});
 
 // Passport middleware
 app.use(passport.initialize());
