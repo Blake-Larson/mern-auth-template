@@ -18,7 +18,7 @@ The front-end for this app was built using React and Tailwindcss along with Axio
 The back-end for this app was built using Node, Express, Mongoose, and MongoDB along with Passport-local, Express-session, and Bcrpyt for authentication. The backend is based off of an MVC architecture with the views being in the client folder. The routes and controller handle login, logout, signup, and authenticated to check if the current user has an authenticated session stored.  
 
 ## Optimizations
-While I want to keep this template simple, I know that there is more work to be done refactoring how I handle authentication. 
+While I want to keep this template simple, I know that there is more work to be done refactoring how I handle authentication.<br>  
 My next steps are:
 * Ensure authentication is using best practices and is secure.
 * Possibly look into using cookies along with express-session.
@@ -27,11 +27,15 @@ My next steps are:
 ## Lessons Learned:
 I have really become familar with MVC architecture and navigating the backend. I have also learned that there are so many ways to authenticate your applications and they all have their pros and cons. It was a challenge to try to keep the authentication simple while still being secure.
 
+- - - -
+
 ## Other Work:
 Take a look at some other projects I have.
 
-**Counting Cows** [Live Site](https://counting-cows.herokuapp.com/)[Repo](https://github.com/Blake-Larson/counting-cows)
+**Counting Cows** 
+[Live Site](https://counting-cows.herokuapp.com/)<br>  
+[Repo](https://github.com/Blake-Larson/counting-cows)
 
-**Karissa Derousseua:** [Kdconciergept.com](https://kdconciergept.com/)
+**Karissa Derousseua: A client Website** [Kdconciergept.com](https://kdconciergept.com/)
 
 
