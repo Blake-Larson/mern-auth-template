@@ -32,8 +32,7 @@ I have really become familar with MVC architecture and navigating the backend. I
 ## Other Work:
 Take a look at some other projects I have.
 
-**Counting Cows** <br>  
-[Live Site](https://counting-cows.herokuapp.com/) | [Repo](https://github.com/Blake-Larson/counting-cows)
+**Counting Cows:** [Live Site](https://counting-cows.herokuapp.com/) | [Repo](https://github.com/Blake-Larson/counting-cows)
 
 **Karissa Derousseua: A client Website** [Kdconciergept.com](https://kdconciergept.com/)
 
