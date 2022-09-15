@@ -2,9 +2,9 @@
 
 A template to use for full-stack MERN apps with authentication and MVC backend organization.
 
-<!-- **Link to project:** http://recruiters-love-seeing-live-demos.com/ -->
+**Link to project:** (No live site yet, RIP Heroku)
 
-![A screenshot of the app](https://drive.google.com/file/d/1-2_qh0nSB2_kS1qBRbo0eHqOYeL-L2Kv/view?usp=sharing) 
+<!-- ![A screenshot of the app](https://drive.google.com/file/d/1-2_qh0nSB2_kS1qBRbo0eHqOYeL-L2Kv/view?usp=sharing)  -->
 
 ## How It's Made:
 
