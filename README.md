@@ -20,9 +20,9 @@ The back-end for this app was built using Node, Express, Mongoose, and MongoDB a
 ## Optimizations
 While I want to keep this template simple, I know that there is more work to be done refactoring how I handle authentication. 
 My next steps are:
--Ensure authentication is using best practices and is secure.
--Possibly look into using cookies along with express-session.
--Fix the RequireAuth component to redirect to home page if the user is not authenticated.
+* Ensure authentication is using best practices and is secure.
+* Possibly look into using cookies along with express-session.
+* Fix the RequireAuth component to redirect to home page if the user is not authenticated.
 
 ## Lessons Learned:
 I have really become familar with MVC architecture and navigating the backend. I have also learned that there are so many ways to authenticate your applications and they all have their pros and cons. It was a challenge to try to keep the authentication simple while still being secure.
