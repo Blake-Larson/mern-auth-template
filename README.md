@@ -8,14 +8,14 @@ A template to use for full-stack MERN apps with authentication and MVC backend o
 
 ## How It's Made:
 
-**Tech used:** HTML, CSS, JavaScript, React, Node, Express, TailwindCSS
+### Tech used: HTML, CSS, JavaScript, React, Node, Express, TailwindCSS
 
 Here's where you can go to town on how you actually built this thing. Write as much as you can here, it's totally fine if it's not too much just make sure you write *something*. If you don't have too much experience on your resume working on the front end that's totally fine. This is where you can really show off your passion and make up for that ten fold.
 
-**Front-End**
+### Front-End
 The front-end for this app was built using React and Tailwindcss along with Axios, React-router-dom, and DaisyUi(a Tailwindcss component library). The React authentication method revolves around the RequireAuth and useAuth components. useAuth uses react context to extend the auth state to any component under the AuthProvider. The RequireAuth component provides a way to check for authentication on specific routes, such as the Dashboard. Because this is a template, I left the rest of the React app pretty simple with a public home page and a private dashboard page.
 
-**Back-End**
+### Back-End
 The back-end for this app was built using Node, Express, Mongoose, and MongoDB along with Passport-local, Express-session, and Bcrpyt for authentication. The backend is based off of an MVC architecture with the views being in the client folder. The routes handle login, logout, signup, and authenticated to check if the current user has an authenticated session stored.  
 
 ## Optimizations
