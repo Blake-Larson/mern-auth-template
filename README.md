@@ -32,7 +32,7 @@ I have really become familar with MVC architecture and navigating the backend. I
 ## Other Work:
 Take a look at some other projects I have.
 
-**Counting Cows** 
+**Counting Cows** <br>  
 [Live Site](https://counting-cows.herokuapp.com/)<br>  
 [Repo](https://github.com/Blake-Larson/counting-cows)
 
