@@ -2,15 +2,6 @@ const passport = require('passport');
 const validator = require('validator');
 const User = require('../models/User');
 
-//  exports.getLogin = (req, res) => {
-//     if (req.user) {
-//       return res.redirect('/todos')
-//     }
-//     res.render('login', {
-//       title: 'Login'
-//     })
-//   }
-
 exports.postLogin = (req, res, next) => {
 	if (!validator.isEmail(req.body.email)) {
 		res.status(400).json({
@@ -42,7 +33,7 @@ exports.postLogin = (req, res, next) => {
 		if (!user) {
 			res.status(500).json({
 				message: {
-					msgBody: info.message,
+					msgBody: 'Incorrect email or password.',
 					msgError: true,
 					err,
 				},
@@ -63,25 +54,6 @@ exports.postLogin = (req, res, next) => {
 		});
 	})(req, res, next);
 };
-
-exports.logout = (req, res) => {
-	req.logout();
-	req.session.destroy(err => {
-		if (err)
-			console.log('Error : Failed to destroy the session during logout.', err);
-		req.user = null;
-		res.redirect('/');
-	});
-};
-
-// exports.getSignup = (req, res) => {
-//   if (req.user) {
-//     return res.redirect('/todos')
-//   }
-//   res.render('signup', {
-//     title: 'Create Account'
-//   })
-// }
 
 exports.postSignup = (req, res) => {
 	if (!validator.isEmail(req.body.email)) {
@@ -169,12 +141,42 @@ exports.postSignup = (req, res) => {
 	);
 };
 
+exports.logout = (req, res) => {
+	req.session.destroy(err => {
+		if (err)
+			console.log('Error : Failed to destroy the session during logout.', err);
+		req.user = null;
+		res.status(200).json({
+			message: {
+				msgBody: 'Successfully logged out',
+				msgError: false,
+			},
+		});
+	});
+};
+
 exports.getAuthenticated = (req, res) => {
-	console.log(req.session.passport, 'hi');
-	const { user } = req.session.passport;
-	if (user) {
-		return res.status(200).json({ isAuthenticated: true, user: { userName } });
-	} else {
-		return res.status(401).json({ isAuthenticated: false, user: { userName } });
-	}
+	User.findById(req.session?.passport?.user, (err, user) => {
+		if (err) {
+			res.status(500).json({
+				message: {
+					msgBody: 'Error has occured trying to find session.',
+					msgError: true,
+					err,
+				},
+			});
+			return;
+		}
+		if (!user) {
+			res.status(204).json({
+				message: {
+					msgBody: 'No session found.',
+					msgError: true,
+				},
+			});
+			return;
+		} else {
+			res.json(user);
+		}
+	});
 };

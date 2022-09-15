@@ -1,60 +1,58 @@
 import * as React from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const authContext = React.createContext();
 
 function useAuth() {
+	let navigate = useNavigate();
+
 	const [authed, setAuthed] = React.useState(false);
 	const [user, setUser] = React.useState({});
 
-	// React.useEffect(() => {
-	// 	async function getAuth() {
-	// 		try {
-	// 			const response = await axios({
-	// 				method: 'GET',
-	// 				url: 'http://localhost:5000/authenticated',
-	// 				withCredentials: true,
-	// 			});
-	// 			console.log('From Server:', response.data.user);
-	// 			if (response.message === 'Authorized') {
-	// 				setAuthed(true);
-	// 				setUser(response.data.user);
-	// 			}
-	// 		} catch (err) {
-	// 			console.log(err);
-	// 		}
-	// 	}
-	// 	getAuth();
-	// }, []);
+	React.useEffect(() => {
+		(async () => {
+			try {
+				const response = await axios({
+					method: 'GET',
+					url: 'http://localhost:5000/authenticated',
+					withCredentials: true,
+				});
+				console.log('From Server:', response);
+				if (response.status === 200) {
+					setAuthed(true);
+					setUser(response.data);
+				} else {
+					setAuthed(false);
+					setUser({});
+				}
+			} catch (err) {
+				console.log(err);
+			}
+		})();
+	}, []);
 
 	return {
 		authed,
 		user,
-		async handleLogin(loginData) {
-			console.log(loginData, 'Login Attempt Sent');
+		handleLogin(user) {
+			setAuthed(true);
+			setUser(user);
+		},
+		async handleLogout() {
 			try {
 				const response = await axios({
-					method: 'POST',
-					data: {
-						email: loginData.email,
-						password: loginData.password,
-					},
-					url: 'http://localhost:5000/login',
+					method: 'GET',
+					url: 'http://localhost:5000/logout',
 					withCredentials: true,
 				});
-				console.log('From Server:', response.data.user);
-				setAuthed(true);
-				setUser(response.data.user);
-				return response;
+				console.log('From Server:', response.data.message.msgBody);
+				setAuthed(false);
+				setUser(null);
+				navigate('/');
 			} catch (err) {
 				console.log(err);
 			}
-		},
-		handleLogout() {
-			return new Promise(res => {
-				setAuthed(false);
-				res();
-			});
 		},
 	};
 }

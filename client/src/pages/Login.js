@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import useAuth from '../auth/useAuth';
+import axios from 'axios';
 
 function Login() {
-	// let navigate = useNavigate();
+	let navigate = useNavigate();
 
 	const { handleLogin } = useAuth();
 
@@ -27,11 +29,22 @@ function Login() {
 	const handleSubmit = async event => {
 		event.preventDefault();
 		try {
-			const response = await handleLogin(loginData);
+			const response = await axios({
+				method: 'POST',
+				data: {
+					email: loginData.email,
+					password: loginData.password,
+				},
+				url: 'http://localhost:5000/login',
+				withCredentials: true,
+			});
+			console.log('From Server:', response.data.user);
 			setMsg({
 				text: response.data.message.msgBody,
 				success: true,
 			});
+			handleLogin(response.data.user);
+			navigate('/dashboard');
 		} catch (err) {
 			console.log(err);
 			setMsg({
