@@ -47,6 +47,7 @@ app.use(
 const path = require('path');
 
 if (process.env.NODE_ENV === 'production') {
+	console.log('env:', process.env.NODE_ENV);
 	app.use(express.static('client/build'));
 
 	app.use('/api/', mainRoutes);
@@ -56,6 +57,7 @@ if (process.env.NODE_ENV === 'production') {
 		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 	});
 } else {
+	console.log('env:', process.env.NODE_ENV);
 	app.use('/', mainRoutes);
 	//add additional routes here
 }
