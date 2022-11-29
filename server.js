@@ -17,7 +17,7 @@ app.use(
 		credentials: true,
 		origin: `${
 			process.env.NODE_ENV === 'production'
-				? 'https://mern-auth-template-example.herokuapp.com' //your client side URL
+				? 'https://mern-auth-template-example.herokuapp.com/' //your client side URL
 				: 'http://localhost:3000'
 		}`,
 	})
@@ -47,7 +47,7 @@ app.use(
 const path = require('path');
 
 if (process.env.NODE_ENV === 'production') {
-	console.log('env:', process.env.NODE_ENV);
+	console.log('env-pro:', process.env.NODE_ENV);
 	app.use(express.static('client/build'));
 
 	app.use('/api/', mainRoutes);
@@ -57,7 +57,7 @@ if (process.env.NODE_ENV === 'production') {
 		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 	});
 } else {
-	console.log('env:', process.env.NODE_ENV);
+	console.log('env-dev:', process.env.NODE_ENV);
 	app.use('/', mainRoutes);
 	//add additional routes here
 }
