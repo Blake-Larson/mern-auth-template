@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../auth/useAuth';
 import axios from 'axios';
+import Header from '../components/Header';
 
 function Login() {
 	let navigate = useNavigate();
@@ -12,6 +13,18 @@ function Login() {
 		text: '',
 		success: false,
 	});
+	const [clearMsg, setClearMsg] = React.useState(false);
+
+	React.useEffect(() => {
+		const clear = setTimeout(() => {
+			setMsg({
+				text: '',
+				success: false,
+			});
+		}, 4000);
+
+		return () => clearTimeout(clear);
+	}, [clearMsg]);
 
 	const [loginData, setLoginData] = React.useState({
 		email: '',
@@ -35,62 +48,66 @@ function Login() {
 					email: loginData.email,
 					password: loginData.password,
 				},
-				url: 'http://localhost:5000/login',
+				url: `${process.env.REACT_APP_API_URL}/login`,
 				withCredentials: true,
 			});
 			console.log('From Server:', response.data.user);
-			setMsg({
-				text: response.data.message.msgBody,
-				success: true,
-			});
+			setMsg(
+				{
+					text: response.data.message.msgBody,
+					success: true,
+				},
+				setClearMsg(!clearMsg)
+			);
 			handleLogin(response.data.user);
 			navigate('/dashboard');
 		} catch (err) {
 			console.log(err);
-			setMsg({
-				text: err.response.data.message.msgBody,
-				success: false,
-			});
+			setMsg(
+				{
+					text: err.response.data.message.msgBody,
+					success: false,
+				},
+				setClearMsg(!clearMsg)
+			);
 		}
 	};
 
 	return (
 		<div>
-			<section className='flex flex-col items-center p-10'>
-				<div className='card w-96 shadow-xl bg-neutral'>
-					<div className='card-body'>
-						<h1 className='card-title self-center mb-4 text-white'>
-							Welcome back!
-						</h1>
-						<form onSubmit={handleSubmit} className='flex flex-col gap-2'>
-							<input
-								type='text'
-								name='email'
-								placeholder='Email'
-								onChange={handleFormChange}
-								className='input input-bordered w-full max-w-xs'
-							/>
-							<input
-								type='password'
-								name='password'
-								placeholder='Password'
-								onChange={handleFormChange}
-								className='input input-bordered w-full max-w-xs'
-							/>
-							<div className='card-actions justify-center mt-4'>
-								<button className='btn btn-primary'>Log in</button>
-							</div>
-						</form>
-						<div
-							className={
-								msg.success
-									? 'text-success text-center'
-									: 'text-warning text-center'
-							}
-						>
-							{msg ? msg.text : ''}
-						</div>
+			<Header />
+			<section className='flex flex-col items-center p-10 gap-5'>
+				<h1 className='text-xl'>Welcome back!</h1>
+				<form
+					onSubmit={handleSubmit}
+					className='flex flex-col gap-2 w-full items-center'
+				>
+					<input
+						type='text'
+						name='email'
+						placeholder='Email'
+						onChange={handleFormChange}
+						className='input border-2 border-base-300 w-full max-w-sm'
+						required
+					/>
+					<input
+						type='password'
+						name='password'
+						placeholder='Password'
+						onChange={handleFormChange}
+						className='input border-2 border-base-300 w-full max-w-sm'
+						required
+					/>
+					<div className='self-center mt-3'>
+						<button className='btn btn-primary'>Log in</button>
 					</div>
+				</form>
+				<div
+					className={
+						msg.success ? 'text-success text-center' : 'text-error text-center'
+					}
+				>
+					{msg ? msg.text : ''}
 				</div>
 			</section>
 		</div>

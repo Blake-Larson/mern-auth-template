@@ -15,7 +15,11 @@ require('dotenv').config({ path: './config/.env' });
 app.use(
 	cors({
 		credentials: true,
-		origin: 'http://localhost:3000',
+		origin: `${
+			process.env.NODE_ENV === 'production'
+				? 'https://example.herokuapp.com/' //your client side URL
+				: 'http://localhost:3000'
+		}`,
 	})
 );
 
@@ -31,18 +35,34 @@ app.use(logger('dev'));
 // Sessions
 app.use(
 	session({
-		secret: 'keyboard cat',
+		secret: process.env.SESSION_SECRET,
 		resave: false,
 		saveUninitialized: false,
 		store: new MongoStore({ mongooseConnection: mongoose.connection }),
+		cookie: { maxAge: 604800016 },
 	})
 );
+
+// Routes
+const path = require('path');
+
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static('client/build'));
+
+	app.use('/api/', mainRoutes);
+	//add additional routes here
+
+	app.get('/*', (req, res) => {
+		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+	});
+} else {
+	app.use('/', mainRoutes);
+	//add additional routes here
+}
 
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use('/', mainRoutes);
 
 app.listen(process.env.PORT, () => {
 	console.log('Server is running, you better catch it!');

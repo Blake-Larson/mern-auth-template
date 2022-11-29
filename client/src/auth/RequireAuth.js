@@ -1,17 +1,20 @@
 import React from 'react';
-//import { Navigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useAuth from './useAuth';
 import Header from '../components/Header';
 
 export const RequireAuth = ({ children }) => {
 	const { authed } = useAuth();
-	// const location = useLocation();
+	const navigate = useNavigate();
 
-	// return authed === true ? (
-	// 	children
-	// ) : (
-	// 	<Navigate to='/' replace state={{ path: location.pathname }} />
-	// );
+	// Redirect to /login if the user is not authenticated within 1.5 seconds
+	React.useEffect(() => {
+		const clear = setTimeout(() => {
+			!authed && navigate('/login');
+		}, 1500);
+		return () => clearTimeout(clear);
+	}, [authed, navigate]);
+
 	return (
 		<div>
 			{/* If app is loaded, we are passing the user and isAuthenticated values as a global state */}
@@ -20,7 +23,9 @@ export const RequireAuth = ({ children }) => {
 			) : (
 				<div>
 					<Header />
-					<h1>Loading...</h1>
+					<div className='flex justify-center mt-10'>
+						<button className='btn loading text-base-100'>loading</button>
+					</div>
 				</div>
 			)}
 		</div>

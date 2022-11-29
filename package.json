@@ -1,13 +1,14 @@
 {
-	"name": "todo-mvc-auth-local",
+	"name": "mern-auth-template",
 	"version": "1.0.0",
 	"description": "",
 	"main": "server.js",
 	"scripts": {
-		"start": "nodemon server.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"dev": "nodemon server.js",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
 	},
-	"author": "",
+	"author": "Blake Larson",
 	"license": "MIT",
 	"dependencies": {
 		"bcrypt": "^5.0.1",
@@ -15,7 +16,6 @@
 		"cors": "^2.8.5",
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
-		"express-flash": "^0.0.2",
 		"express-session": "^1.17.1",
 		"mongodb": "^3.6.5",
 		"mongoose": "^5.12.3",
