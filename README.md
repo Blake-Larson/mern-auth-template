@@ -4,7 +4,7 @@ A template to use for full-stack MERN apps with authentication and MVC backend o
 
 **Link to project:** https://mern-auth-template-example.herokuapp.com/
 
-<p align="center" ><img align="center" src="https://github.com/Blake-Larson/my-music-studio/blob/main/client/src/assets/images/demo.jpg" alt="The inital view of Mern-Auth-Template" /></p>
+<p align="center" ><img align="center" src="https://github.com/Blake-Larson/mern-auth-template/blob/main/client/src/assets/mern-auth-template-photo.png" alt="The inital view of Mern-Auth-Template" /></p>
 
 ## How It's Made:
 
