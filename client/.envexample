@@ -1,2 +1,5 @@
 REACT_APP_API_URL = http://localhost:5001
 NODE_ENV = development
+
+--Heroku Vars Example--
+--REACT_APP_API_URL = https://mern-auth-template-example.herokuapp.com/api

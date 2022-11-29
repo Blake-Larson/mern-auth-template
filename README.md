@@ -33,7 +33,31 @@ My next steps are:
 
 I have really become familar with MVC architecture and navigating the backend. I have also learned that there are so many ways to authenticate your applications and they all have their pros and cons. It was a challenge to try to keep the authentication simple while still being secure.
 
----
+## Instructions:
+
+# Setup
+
+- npm install in the root directory
+- cd client and npm install
+- Rename both the server side and client side .envexample to .env
+- Add your MongoDB string
+- While in root directory run 'npm run dev'
+- Open a split terminal, cd client, and run 'npm start'
+
+# Hosting
+
+I currently have this template setup to host on heroku but you're welcome to use another hosting service if you prefer.
+
+- Run 'heroku login'
+- Run 'heroku create app-name' through the heroku cli
+- Add a new commit and push to your repo
+- Run 'git push heroku main'
+
+Add the following Config Vars to Heroku
+
+- REACT_APP_API_URL = https://mern-auth-template-example.herokuapp.com/api (Use your app url and don't forget the /api here)
+- DB_STRING = your MongoDB String
+- SESSION_SECRET = whatever word you want to use
 
 ## Other Work:
 
