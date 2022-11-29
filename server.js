@@ -17,7 +17,7 @@ app.use(
 		credentials: true,
 		origin: `${
 			process.env.NODE_ENV === 'production'
-				? 'https://mern-auth-template-example.herokuapp.com/' //your client side URL
+				? 'https://mern-auth-template-example.herokuapp.com' //your client side URL
 				: 'http://localhost:3000'
 		}`,
 	})
