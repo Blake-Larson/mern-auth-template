@@ -35,7 +35,7 @@ I have really become familar with MVC architecture and navigating the backend. I
 
 ## Instructions:
 
-# Setup
+### Setup
 
 - npm install in the root directory
 - cd client and npm install
@@ -44,7 +44,7 @@ I have really become familar with MVC architecture and navigating the backend. I
 - While in root directory run 'npm run dev'
 - Open a split terminal, cd client, and run 'npm start'
 
-# Hosting
+### Hosting
 
 I currently have this template setup to host on heroku but you're welcome to use another hosting service if you prefer.
 
@@ -63,6 +63,6 @@ Add the following Config Vars to Heroku
 
 Take a look at some other projects I have.
 
-**Counting Cows:** [Live Site](https://counting-cows.herokuapp.com/) | [Repo](https://github.com/Blake-Larson/counting-cows)
+**My Music Studio:** [Live Site](https://my-music-studio.herokuapp.com/) | [Repo](https://github.com/Blake-Larson/my-music-studio)
 
 **Karissa Derousseua: A client Website** [Kdconciergept.com](https://kdconciergept.com/)
